@@ -42,7 +42,7 @@ function resetSendUI(){$('send').disabled=sent;$('restart').disabled=false;$('se
 function cleanupRequest(){if(!pendingRequest)return;clearTimeout(pendingRequest.timer);pendingRequest.form.remove();pendingRequest.frame.remove();pendingRequest=null;$('send').disabled=sent;$('restart').disabled=false;}
 function sendToSheets(){
  if(pendingRequest||sent||rows.length!==23)return;
- if(!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(SHEETS_WEB_APP_URL)){$('sendStatus').textContent='送信先が未設定です。授業担当者に確認し、CSVを保存してください。';return;}
+ if(!/^https:\/\/script\.google\.com\//(?:a\/macros\/[^/]+|macros)\/s\/[A-Za-z0-9_-]+\/exec$/.test(SHEETS_WEB_APP_URL)){$('sendStatus').textContent='送信先が未設定です。授業担当者に確認し、CSVを保存してください。';return;}
  const nonce=newId(),data={...snapshot(),class_code:CLASS_CODE,request_nonce:nonce,client_origin:location.origin};
  const frame=document.createElement('iframe');frame.name='sheets_receiver_'+nonce;frame.title='実験結果の送信';frame.style.cssText='position:absolute;width:1px;height:1px;left:-9999px;border:0';frame.setAttribute('aria-hidden','true');
  const form=document.createElement('form');form.method='POST';form.action=SHEETS_WEB_APP_URL;form.target=frame.name;form.style.display='none';
